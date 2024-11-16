@@ -35,7 +35,8 @@ ADD CONSTRAINT FK_Grade_SinhVien
 FOREIGN KEY (MaSV) REFERENCES SINHVIEN(MaSV)
 GO
 INSERT INTO USERS (username, password, role)
-VALUES ('CBDT1', 'CBDT@123', 'CBDT'),
+VALUES ('ADMIN1', 'ADMIN@123@123', 'ADMIN'),
+       ('CBDT1', 'CBDT@123', 'CBDT'),
        ('GV1', 'GV@123', 'GV'),
        ('SV1', 'SV@123', 'SV')
 GO

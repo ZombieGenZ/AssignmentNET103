@@ -21,7 +21,12 @@ namespace Assignment
 
         private void LoadFunction()
         {
-            if (role == "GV")
+            if (role == "ADMIN")
+            {
+                smiQuanLyDiem.Enabled = true;
+                smiQuanLySV.Enabled = true;
+            }
+            else if (role == "GV")
             {
                 smiQuanLyDiem.Enabled = true;
             }

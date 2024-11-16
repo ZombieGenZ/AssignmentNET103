@@ -21,11 +21,14 @@ namespace Assignment
 
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
+                //txtUsername.Text = Security.Decrypt(username);
+                //txtPassword.Text = Security.Decrypt(password);
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('CBDT', 'GV')";
+                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('ADMIN', 'CBDT', 'GV')";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", Security.Decrypt(username));
@@ -66,7 +69,7 @@ namespace Assignment
                 {
                     conn.Open();
 
-                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('CBDT', 'GV')";
+                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('ADMIN', 'CBDT', 'GV')";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);

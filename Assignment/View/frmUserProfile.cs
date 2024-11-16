@@ -9,7 +9,11 @@ namespace Assignment.View
         {
             InitializeComponent();
             txtUsername.Text = username;
-            if (role == "CBDT")
+            if (role == "ADMIN")
+            {
+                txtRole.Text = "Quản trị viên";
+            }
+            else if (role == "CBDT")
             {
                 txtRole.Text = "Cán bộ đào tạo";
             }

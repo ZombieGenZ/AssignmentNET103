@@ -19,11 +19,11 @@ namespace Assignment
         {
             InitializeComponent();
 
-            LoadStudnetData();
+            LoadStudentData();
             this.frm = frm;
         }
 
-        private void LoadStudnetData()
+        private void LoadStudentData()
         {
             try
             {
@@ -93,6 +93,8 @@ namespace Assignment
                 btnSave.Enabled = true;
                 btnCancel.Enabled = true;
                 btnUploadPicture.Enabled = true;
+                btnShow.Enabled = false;
+                btnDelete.Enabled = false;
             }
             else if (selectFunction == 2)
             {
@@ -126,6 +128,8 @@ namespace Assignment
                     btnSave.Enabled = true;
                     btnCancel.Enabled = true;
                     btnUploadPicture.Enabled = true;
+                    btnShow.Enabled = false;
+                    btnDelete.Enabled = false;
 
                     txtMaSV.Text = dgvData.SelectedCells[0].OwningRow.Cells[0].Value.ToString();
                     txtTenSV.Text = dgvData.SelectedCells[0].OwningRow.Cells[1].Value.ToString();
@@ -181,6 +185,7 @@ namespace Assignment
                 btnSave.Enabled = false;
                 btnCancel.Enabled = false;
                 btnUploadPicture.Enabled = false;
+                btnDelete.Enabled = true;
 
                 txtMaSV.Text = "";
                 txtTenSV.Text = "";
@@ -189,6 +194,8 @@ namespace Assignment
                 txtDiaChi.Text = "";
                 rbtGTNam.Checked = true;
                 rbtGTNu.Checked = false;
+
+                btnShow.Enabled = true;
 
                 imageData = null;
                 LoadPictureBox();
@@ -217,6 +224,31 @@ namespace Assignment
         {
             if (selectFunction != 0)
             {
+                //try
+                //{
+                //    string maSV = txtMaSV.Text;
+                //    string tenSV = txtTenSV.Text;
+                //    string email = txtEmail.Text;
+                //    string soDT = txtSoDT.Text;
+                //    string diaChi = txtDiaChi.Text;
+
+                //    if (!string.IsNullOrEmpty(maSV) || !string.IsNullOrEmpty(tenSV) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(soDT) || !string.IsNullOrEmpty(diaChi) || !(imageData == null))
+                //    {
+                //        DialogResult result = MessageBox.Show("Bạn có chắc chắn muống hũy? Dử liệu đang chỉnh sửa sẽ biến mất và không thể khôi phục", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                //        if (result != DialogResult.Yes)
+                //        {
+                //            return;
+                //        }
+                //    }
+
+                //    selectFunction = 0;
+                //    LoadFunction();
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show($"Lỗi: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //}
+
                 selectFunction = 0;
                 LoadFunction();
             }
@@ -227,9 +259,10 @@ namespace Assignment
             try
             {
                 using (OpenFileDialog file = new OpenFileDialog())
-                {
+                {   
                     file.Filter = "Image Files(*.jpeg;*.bmp;*.png;*.jpg)|*.jpeg;*.bmp;*.png;*.jpg";
                     file.RestoreDirectory = true;
+                    file.Multiselect = false;
 
                     if (file.ShowDialog() == DialogResult.OK)
                     {
@@ -376,7 +409,7 @@ namespace Assignment
 
                             selectFunction = 0;
                             LoadFunction();
-                            LoadStudnetData();
+                            LoadStudentData();
                             MessageBox.Show("Thêm thông tin sinh viên thành công", "Chúc mừng", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
@@ -478,7 +511,7 @@ namespace Assignment
 
                             selectFunction = 0;
                             LoadFunction();
-                            LoadStudnetData();
+                            LoadStudentData();
                             MessageBox.Show("Cập nhật thông tin sinh viên thành công", "Chúc mừng", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
@@ -555,7 +588,7 @@ namespace Assignment
 
                             selectFunction = 0;
                             LoadFunction();
-                            LoadStudnetData();
+                            LoadStudentData();
                             MessageBox.Show("Xóa thông tin sinh viên thành công", "Chúc mừng", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
@@ -608,6 +641,71 @@ namespace Assignment
         private bool IsValidPhoneNumber(string phone)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(phone, @"^\d{10}$");
+        }
+
+        private void dgvData_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvData.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    selectFunction = 2;
+
+                    txtMaSV.ReadOnly = true;
+                    txtTenSV.ReadOnly = false;
+                    txtEmail.ReadOnly = false;
+                    txtSoDT.ReadOnly = false;
+                    txtDiaChi.ReadOnly = false;
+                    rbtGTNam.Enabled = true;
+                    rbtGTNu.Enabled = true;
+                    btnNew.Enabled = false;
+                    btnUpdate.Enabled = false;
+                    btnSave.Enabled = true;
+                    btnCancel.Enabled = true;
+                    btnUploadPicture.Enabled = true;
+                    btnShow.Enabled = false;
+                    btnDelete.Enabled = false;
+
+                    txtMaSV.Text = dgvData.SelectedRows[0].Cells[0].Value.ToString();
+                    txtTenSV.Text = dgvData.SelectedRows[0].Cells[1].Value.ToString();
+                    txtEmail.Text = dgvData.SelectedRows[0].Cells[2].Value.ToString();
+                    txtSoDT.Text = dgvData.SelectedRows[0].Cells[3].Value.ToString();
+                    txtDiaChi.Text = dgvData.SelectedRows[0].Cells[5].Value.ToString();
+                    rbtGTNam.Checked = (dgvData.SelectedRows[0].Cells[4].Value.ToString() == "Nam");
+                    rbtGTNu.Checked = !(dgvData.SelectedRows[0].Cells[4].Value.ToString() == "Nam");
+
+                    try
+                    {
+                        using (SqlConnection conn = new SqlConnection(connectionString))
+                        {
+                            conn.Open();
+
+                            string query = @"SELECT Hinh FROM SINHVIEN WHERE MaSV = @MaSV";
+                            using (SqlCommand cmd = new SqlCommand(query, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@MaSV", dgvData.SelectedRows[0].Cells[0].Value.ToString());
+
+                                dynamic data = cmd.ExecuteScalar();
+
+                                imageData = data;
+                                LoadPictureBox();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi: {ex.Message}", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                catch
+                {
+                    selectFunction = 0;
+                    LoadFunction();
+                    MessageBox.Show("Vui lòng chọn sinh viên cần chỉnh sửa");
+                    return;
+                }
+            }
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Assignment.View
             {
                 conn.Open();
 
-                string query = "SELECT TOP 3 SV.MaSV, SV.HoTen, GD.TiengAnh, GD.TinHoc, GD.GDTC, ((GD.TiengAnh + TinHoc + GDTC) / 3) FROM SINHVIEN SV JOIN GRADE GD ON SV.MaSV = GD.MaSV ORDER BY ((GD.TiengAnh + GD.TinHoc + GD.GDTC) / 3) DESC";
+                string query = "SELECT TOP 3 SV.MaSV, SV.HoTen, GD.TiengAnh, GD.TinHoc, GD.GDTC, CONVERT(NUMERIC(2,1), ((GD.TiengAnh + TinHoc + GDTC) / 3)) FROM SINHVIEN SV JOIN GRADE GD ON SV.MaSV = GD.MaSV ORDER BY ((GD.TiengAnh + GD.TinHoc + GD.GDTC) / 3) DESC";
                 DataTable dt = new DataTable();
                 using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                 {
@@ -77,7 +77,7 @@ namespace Assignment.View
                 dgvTOPSV.Columns[2].HeaderText = "Tiếng anh";
                 dgvTOPSV.Columns[3].HeaderText = "Tin học";
                 dgvTOPSV.Columns[4].HeaderText = "GDTC";
-                dgvTOPSV.Columns[5].HeaderText = "Tổng điểm";
+                dgvTOPSV.Columns[5].HeaderText = "Điểm TB";
                 
             }
         }
@@ -640,6 +640,29 @@ namespace Assignment.View
         {
             if (selectFunction != 0 && selectType != 0)
             {
+                //try
+                //{
+                //    string tiengAnh_Input = txtTiengAnh.Text;
+                //    string tinHoc_Input = txtTinHoc.Text;
+                //    string gdtc_Input = txtGDTC.Text;
+
+                //    if (!string.IsNullOrEmpty(tiengAnh_Input) || !string.IsNullOrEmpty(tinHoc_Input) || !string.IsNullOrEmpty(gdtc_Input))
+                //    {
+                //        DialogResult result = MessageBox.Show("Bạn có chắc chắn muống hũy? Dử liệu đang chỉnh sửa sẽ biến mất và không thể khôi phục", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                //        if (result != DialogResult.Yes)
+                //        {
+                //            return;
+                //        }
+                //    }
+
+                //    selectFunction = 0;
+                //    LoadFunction();
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show($"Lỗi: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //}
+
                 selectFunction = 0;
                 LoadFunction();
             }
@@ -723,6 +746,98 @@ namespace Assignment.View
                                     break;
                                 }
                             }
+                        }
+
+                        string queryFindGrade = @"SELECT TiengAnh, TinHoc, GDTC, ((TiengAnh + TinHoc + GDTC) / 3) AS TongDiem FROM GRADE WHERE MaSV = @MaSV";
+                        using (SqlCommand cmd = new SqlCommand(queryFindGrade, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaSV", maSV);
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (!reader.HasRows)
+                                {
+                                    txtTiengAnh.Text = "Chưa nhập";
+                                    txtTinHoc.Text = "Chưa nhập";
+                                    txtGDTC.Text = "Chưa nhập";
+                                    lblShowTongDiem.Text = "Chưa xét";
+                                    selectType = 1;
+                                    LoadFunction();
+                                    return;
+                                }
+
+                                while (reader.Read())
+                                {
+                                    tiengAnh = float.Parse(reader[0].ToString());
+                                    txtTiengAnh.Text = tiengAnh.ToString("N1");
+                                    tinHoc = float.Parse(reader[1].ToString());
+                                    txtTinHoc.Text = tinHoc.ToString("N1");
+                                    GDTC = float.Parse(reader[2].ToString());
+                                    txtGDTC.Text = GDTC.ToString("N1");
+                                    lblShowTongDiem.Text = ((tiengAnh + tinHoc + GDTC) / 3).ToString("N1");
+                                    selectType = 2;
+                                    LoadFunction();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void dgvTOPSV_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvTOPSV.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    string maSV = dgvTOPSV.SelectedRows[0].Cells[0].Value.ToString();
+
+                    if (string.IsNullOrEmpty(maSV))
+                    {
+                        MessageBox.Show("Vui lòng chọn sinh viên", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        string queryFindSinhVien = "SELECT MaSV, HoTen FROM SINHVIEN WHERE MaSV = @MaSV";
+                        using (SqlCommand cmd = new SqlCommand(queryFindSinhVien, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaSV", maSV);
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (!reader.HasRows)
+                                {
+                                    MessageBox.Show("Vui lòng chọn sinh viên", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    selectType = 0;
+                                    return;
+                                }
+
+                                while (reader.Read())
+                                {
+                                    lblShowTenSV.Text = reader[1].ToString();
+                                    txtMaSV.Text = reader[0].ToString();
+                                    selectFunction = 0;
+                                    btnShow.Enabled = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        string queryFindIndex = @"WITH OrderedData AS (SELECT MaSV, ROW_NUMBER() OVER (ORDER BY MaSV ASC) AS RowNumber FROM SINHVIEN) SELECT RowNumber - 1 FROM OrderedData WHERE MaSV = @MaSV";
+                        using (SqlCommand cmd = new SqlCommand(queryFindIndex, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaSV", maSV);
+
+                            currentStudent = int.Parse(cmd.ExecuteScalar().ToString());
                         }
 
                         string queryFindGrade = @"SELECT TiengAnh, TinHoc, GDTC, ((TiengAnh + TinHoc + GDTC) / 3) AS TongDiem FROM GRADE WHERE MaSV = @MaSV";

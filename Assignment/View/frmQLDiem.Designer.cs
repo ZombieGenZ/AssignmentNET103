@@ -473,9 +473,9 @@
             this.lblGDTC.AutoSize = true;
             this.lblGDTC.Location = new System.Drawing.Point(29, 20);
             this.lblGDTC.Name = "lblGDTC";
-            this.lblGDTC.Size = new System.Drawing.Size(45, 16);
+            this.lblGDTC.Size = new System.Drawing.Size(48, 16);
             this.lblGDTC.TabIndex = 0;
-            this.lblGDTC.Text = "GDTC";
+            this.lblGDTC.Text = "GDTC:";
             // 
             // pnlTinHoc
             // 
@@ -532,6 +532,7 @@
             this.dgvTOPSV.RowTemplate.Height = 24;
             this.dgvTOPSV.Size = new System.Drawing.Size(776, 121);
             this.dgvTOPSV.TabIndex = 0;
+            this.dgvTOPSV.SelectionChanged += new System.EventHandler(this.dgvTOPSV_SelectionChanged);
             // 
             // frmQLDiem
             // 
@@ -545,7 +546,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "frmQLDiem";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Guản lý điểm";
+            this.Text = "Quản lý điểm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmQLDiem_FormClosed);
             this.grbTimKiem.ResumeLayout(false);
             this.grbTimKiem.PerformLayout();

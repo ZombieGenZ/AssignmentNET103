@@ -114,6 +114,7 @@
             this.dgvData.RowTemplate.Height = 24;
             this.dgvData.Size = new System.Drawing.Size(731, 205);
             this.dgvData.TabIndex = 1;
+            this.dgvData.SelectionChanged += new System.EventHandler(this.dgvData_SelectionChanged);
             // 
             // pnlInformation
             // 

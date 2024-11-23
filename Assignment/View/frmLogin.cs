@@ -1,5 +1,6 @@
 ﻿using Assignment.Controls;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -21,9 +22,6 @@ namespace Assignment
 
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
-                //txtUsername.Text = Security.Decrypt(username);
-                //txtPassword.Text = Security.Decrypt(password);
-
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
@@ -61,7 +59,30 @@ namespace Assignment
 
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    MessageBox.Show("Vui lòng điền đầy đủ thông tin", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    List<string> emptyList = new List<string>();
+                    if (string.IsNullOrEmpty(username))
+                    {
+                        emptyList.Add("tên người dùng");
+                    }
+                    if (string.IsNullOrEmpty(username))
+                    {
+                        emptyList.Add("mật khẩu");
+                    }
+
+                    string emptyMessage = "Bạn cần điền ";
+                    for (int i = 0; i < emptyList.Count; i++)
+                    {
+                        if (i == (emptyList.Count - 1))
+                        {
+                            emptyMessage += $"{emptyList[i]} để tiếp tục";
+                        }
+                        else
+                        {
+                            emptyMessage += $"{emptyList[i]}, ";
+                        }
+                    }
+
+                    MessageBox.Show(emptyMessage, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

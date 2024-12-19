@@ -118,18 +118,22 @@
             this.btnTimKiem.Name = "btnTimKiem";
             this.btnTimKiem.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnTimKiem.Size = new System.Drawing.Size(93, 23);
-            this.btnTimKiem.TabIndex = 2;
+            this.btnTimKiem.TabIndex = 1;
+            this.btnTimKiem.TabStop = false;
             this.btnTimKiem.Text = "Tìm";
             this.btnTimKiem.UseVisualStyleBackColor = true;
             this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtTimKiem.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtTimKiem.Location = new System.Drawing.Point(141, 26);
             this.txtTimKiem.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(209, 22);
-            this.txtTimKiem.TabIndex = 1;
+            this.txtTimKiem.TabIndex = 0;
+            this.txtTimKiem.TabStop = false;
             // 
             // lblTimKiem
             // 
@@ -165,45 +169,49 @@
             // 
             // btnNext
             // 
+            this.btnNext.Enabled = false;
             this.btnNext.Image = global::Assignment.Properties.Resources.right_arrow;
-            this.btnNext.Location = new System.Drawing.Point(292, 6);
+            this.btnNext.Location = new System.Drawing.Point(215, 3);
             this.btnNext.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(75, 58);
-            this.btnNext.TabIndex = 3;
+            this.btnNext.TabIndex = 16;
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnToStart
             // 
+            this.btnToStart.Enabled = false;
             this.btnToStart.Image = ((System.Drawing.Image)(resources.GetObject("btnToStart.Image")));
-            this.btnToStart.Location = new System.Drawing.Point(211, 6);
+            this.btnToStart.Location = new System.Drawing.Point(53, 3);
             this.btnToStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnToStart.Name = "btnToStart";
             this.btnToStart.Size = new System.Drawing.Size(75, 58);
-            this.btnToStart.TabIndex = 2;
+            this.btnToStart.TabIndex = 15;
             this.btnToStart.UseVisualStyleBackColor = true;
             this.btnToStart.Click += new System.EventHandler(this.btnToStart_Click);
             // 
             // btnToEnd
             // 
+            this.btnToEnd.Enabled = false;
             this.btnToEnd.Image = ((System.Drawing.Image)(resources.GetObject("btnToEnd.Image")));
-            this.btnToEnd.Location = new System.Drawing.Point(131, 6);
+            this.btnToEnd.Location = new System.Drawing.Point(296, 3);
             this.btnToEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnToEnd.Name = "btnToEnd";
             this.btnToEnd.Size = new System.Drawing.Size(75, 58);
-            this.btnToEnd.TabIndex = 1;
+            this.btnToEnd.TabIndex = 14;
             this.btnToEnd.UseVisualStyleBackColor = true;
             this.btnToEnd.Click += new System.EventHandler(this.btnToEnd_Click);
             // 
             // btnPrev
             // 
+            this.btnPrev.Enabled = false;
             this.btnPrev.Image = global::Assignment.Properties.Resources.left_arrow;
-            this.btnPrev.Location = new System.Drawing.Point(49, 6);
+            this.btnPrev.Location = new System.Drawing.Point(134, 3);
             this.btnPrev.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPrev.Name = "btnPrev";
             this.btnPrev.Size = new System.Drawing.Size(75, 58);
-            this.btnPrev.TabIndex = 0;
+            this.btnPrev.TabIndex = 13;
             this.btnPrev.UseVisualStyleBackColor = true;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
@@ -231,7 +239,8 @@
             this.btnShow.Name = "btnShow";
             this.btnShow.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnShow.Size = new System.Drawing.Size(117, 34);
-            this.btnShow.TabIndex = 5;
+            this.btnShow.TabIndex = 12;
+            this.btnShow.TabStop = false;
             this.btnShow.Text = "Show";
             this.btnShow.UseVisualStyleBackColor = true;
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
@@ -246,7 +255,8 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnCancel.Size = new System.Drawing.Size(117, 34);
-            this.btnCancel.TabIndex = 4;
+            this.btnCancel.TabIndex = 11;
+            this.btnCancel.TabStop = false;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -261,7 +271,8 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnSave.Size = new System.Drawing.Size(117, 34);
-            this.btnSave.TabIndex = 3;
+            this.btnSave.TabIndex = 10;
+            this.btnSave.TabStop = false;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -276,7 +287,8 @@
             this.btnNew.Name = "btnNew";
             this.btnNew.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnNew.Size = new System.Drawing.Size(117, 34);
-            this.btnNew.TabIndex = 0;
+            this.btnNew.TabIndex = 7;
+            this.btnNew.TabStop = false;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
@@ -291,7 +303,8 @@
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnUpdate.Size = new System.Drawing.Size(117, 34);
-            this.btnUpdate.TabIndex = 2;
+            this.btnUpdate.TabIndex = 9;
+            this.btnUpdate.TabStop = false;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
@@ -306,7 +319,8 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
             this.btnDelete.Size = new System.Drawing.Size(117, 34);
-            this.btnDelete.TabIndex = 1;
+            this.btnDelete.TabIndex = 8;
+            this.btnDelete.TabStop = false;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -343,7 +357,9 @@
             this.txtTiengAnh.Name = "txtTiengAnh";
             this.txtTiengAnh.ReadOnly = true;
             this.txtTiengAnh.Size = new System.Drawing.Size(132, 22);
-            this.txtTiengAnh.TabIndex = 1;
+            this.txtTiengAnh.TabIndex = 4;
+            this.txtTiengAnh.TabStop = false;
+            this.txtTiengAnh.TextChanged += new System.EventHandler(this.inputDiem_TextChanged);
             // 
             // lblTiengAnh
             // 
@@ -371,7 +387,8 @@
             this.txtMaSV.Name = "txtMaSV";
             this.txtMaSV.ReadOnly = true;
             this.txtMaSV.Size = new System.Drawing.Size(132, 22);
-            this.txtMaSV.TabIndex = 1;
+            this.txtMaSV.TabIndex = 3;
+            this.txtMaSV.TabStop = false;
             // 
             // lblMaSV
             // 
@@ -466,7 +483,9 @@
             this.txtGDTC.Name = "txtGDTC";
             this.txtGDTC.ReadOnly = true;
             this.txtGDTC.Size = new System.Drawing.Size(132, 22);
-            this.txtGDTC.TabIndex = 1;
+            this.txtGDTC.TabIndex = 6;
+            this.txtGDTC.TabStop = false;
+            this.txtGDTC.TextChanged += new System.EventHandler(this.inputDiem_TextChanged);
             // 
             // lblGDTC
             // 
@@ -494,7 +513,9 @@
             this.txtTinHoc.Name = "txtTinHoc";
             this.txtTinHoc.ReadOnly = true;
             this.txtTinHoc.Size = new System.Drawing.Size(132, 22);
-            this.txtTinHoc.TabIndex = 1;
+            this.txtTinHoc.TabIndex = 5;
+            this.txtTinHoc.TabStop = false;
+            this.txtTinHoc.TextChanged += new System.EventHandler(this.inputDiem_TextChanged);
             // 
             // lblTinHoc
             // 
@@ -536,6 +557,7 @@
             // 
             // frmQLDiem
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 724);
@@ -548,6 +570,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản lý điểm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmQLDiem_FormClosed);
+            this.Load += new System.EventHandler(this.frmQLDiem_Load);
             this.grbTimKiem.ResumeLayout(false);
             this.grbTimKiem.PerformLayout();
             this.pnlChucNang.ResumeLayout(false);

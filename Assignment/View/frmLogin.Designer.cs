@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.grbMain = new System.Windows.Forms.GroupBox();
+            this.btnShowPassword = new System.Windows.Forms.Button();
             this.chkNhoTaiKhoan = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnLogin = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             // 
             // grbMain
             // 
+            this.grbMain.Controls.Add(this.btnShowPassword);
             this.grbMain.Controls.Add(this.chkNhoTaiKhoan);
             this.grbMain.Controls.Add(this.btnCancel);
             this.grbMain.Controls.Add(this.btnLogin);
@@ -55,16 +57,29 @@
             this.grbMain.TabStop = false;
             this.grbMain.Text = "Login";
             // 
+            // btnShowPassword
+            // 
+            this.btnShowPassword.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnShowPassword.FlatAppearance.BorderSize = 0;
+            this.btnShowPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShowPassword.Image = global::Assignment.Properties.Resources.eye;
+            this.btnShowPassword.Location = new System.Drawing.Point(289, 82);
+            this.btnShowPassword.Name = "btnShowPassword";
+            this.btnShowPassword.Size = new System.Drawing.Size(38, 22);
+            this.btnShowPassword.TabIndex = 7;
+            this.btnShowPassword.UseVisualStyleBackColor = false;
+            this.btnShowPassword.Click += new System.EventHandler(this.btnShowPassword_Click);
+            // 
             // chkNhoTaiKhoan
             // 
             this.chkNhoTaiKhoan.AutoSize = true;
             this.chkNhoTaiKhoan.Checked = true;
             this.chkNhoTaiKhoan.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNhoTaiKhoan.Location = new System.Drawing.Point(196, 122);
+            this.chkNhoTaiKhoan.Location = new System.Drawing.Point(154, 121);
             this.chkNhoTaiKhoan.Name = "chkNhoTaiKhoan";
-            this.chkNhoTaiKhoan.Size = new System.Drawing.Size(133, 20);
+            this.chkNhoTaiKhoan.Size = new System.Drawing.Size(92, 20);
             this.chkNhoTaiKhoan.TabIndex = 6;
-            this.chkNhoTaiKhoan.Text = "Duy trì đăng nhập";
+            this.chkNhoTaiKhoan.Text = "Chưc năng";
             this.chkNhoTaiKhoan.UseVisualStyleBackColor = true;
             // 
             // btnCancel
@@ -129,9 +144,11 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(388, 216);
             this.Controls.Add(this.grbMain);
+            this.KeyPreview = true;
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogin_KeyDown);
             this.grbMain.ResumeLayout(false);
             this.grbMain.PerformLayout();
             this.ResumeLayout(false);
@@ -143,11 +160,12 @@
         private System.Windows.Forms.GroupBox grbMain;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblUsername;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.CheckBox chkNhoTaiKhoan;
+        private System.Windows.Forms.Button btnShowPassword;
+        internal System.Windows.Forms.TextBox txtUsername;
+        internal System.Windows.Forms.TextBox txtPassword;
+        internal System.Windows.Forms.Button btnLogin;
     }
 }
 

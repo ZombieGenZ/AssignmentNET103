@@ -21,10 +21,46 @@ namespace Assignment.View
         {
             InitializeComponent();
             this.frm = frm;
+        }
+
+        private void frmQLDiem_Load(object sender, EventArgs e)
+        {
             LoadData();
             GetStudentCount();
+            LoadSuggestTextBox();
         }
-        
+
+        private void LoadSuggestTextBox()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    
+                    string query = "SELECT MaSV FROM SINHVIEN";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            AutoCompleteStringCollection source = new AutoCompleteStringCollection();
+
+                            while (reader.Read())
+                            {
+                                source.Add(reader.GetString(0));
+                            }
+
+                            txtTimKiem.AutoCompleteCustomSource = source;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void GetStudentCount()
         {
             try
@@ -36,12 +72,16 @@ namespace Assignment.View
                     string query = "SELECT COUNT(MaSV) FROM SINHVIEN";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        string count = cmd.ExecuteScalar().ToString();
+                        dynamic count = cmd.ExecuteScalar();
 
-                        studnetCount = int.Parse(count);
+                        studnetCount = count;
 
                         if (studnetCount > 0)
                         {
+                            btnNext.Enabled = true;
+                            btnPrev.Enabled = true;
+                            btnToStart.Enabled = true;
+                            btnToEnd.Enabled = true;
                             LoadCurrentData();
                         }
                     }
@@ -64,21 +104,28 @@ namespace Assignment.View
             {
                 conn.Open();
 
-                string query = "SELECT TOP 3 SV.MaSV, SV.HoTen, GD.TiengAnh, GD.TinHoc, GD.GDTC, CONVERT(NUMERIC(2,1), ((GD.TiengAnh + TinHoc + GDTC) / 3)) FROM SINHVIEN SV JOIN GRADE GD ON SV.MaSV = GD.MaSV ORDER BY ((GD.TiengAnh + GD.TinHoc + GD.GDTC) / 3) DESC";
+                string query = "SELECT TOP 3 SV.MaSV, SV.HoTen, FORMAT(GD.TiengAnh, 'N1'), FORMAT(GD.TinHoc, 'N1'), FORMAT(GD.GDTC, 'N1'), FORMAT(((GD.TiengAnh + TinHoc + GDTC) / 3), 'N2') FROM SINHVIEN SV JOIN GRADE GD ON SV.MaSV = GD.MaSV ORDER BY ((GD.TiengAnh + GD.TinHoc + GD.GDTC) / 3) DESC";
                 DataTable dt = new DataTable();
                 using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                 {
                     adapter.Fill(dt);
                 }
-                dgvTOPSV.DataSource = dt;
 
-                dgvTOPSV.Columns[0].HeaderText = "Mã SV";
-                dgvTOPSV.Columns[1].HeaderText = "Họ tên";
-                dgvTOPSV.Columns[2].HeaderText = "Tiếng anh";
-                dgvTOPSV.Columns[3].HeaderText = "Tin học";
-                dgvTOPSV.Columns[4].HeaderText = "GDTC";
-                dgvTOPSV.Columns[5].HeaderText = "Điểm TB";
-                
+                if (dt.Rows.Count > 0)
+                {
+                    dgvTOPSV.DataSource = dt;
+
+                    dgvTOPSV.Columns[0].HeaderText = "Mã SV";
+                    dgvTOPSV.Columns[1].HeaderText = "Họ tên";
+                    dgvTOPSV.Columns[2].HeaderText = "Tiếng anh";
+                    dgvTOPSV.Columns[3].HeaderText = "Tin học";
+                    dgvTOPSV.Columns[4].HeaderText = "GDTC";
+                    dgvTOPSV.Columns[5].HeaderText = "Điểm TB";
+                }
+                else
+                {
+                    dgvTOPSV.DataSource = null;
+                }
             }
         }
         private void btnTimKiem_Click(object sender, EventArgs e)
@@ -87,7 +134,7 @@ namespace Assignment.View
             {
                 string maSV = txtTimKiem.Text;
 
-                if (string.IsNullOrEmpty(maSV))
+                if (string.IsNullOrWhiteSpace(maSV))
                 {
                     MessageBox.Show("Vui lòng nhập mã sinh viên để tìm kiếm", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -283,9 +330,9 @@ namespace Assignment.View
                 {
                     string maSV_Input = txtMaSV.Text;
 
-                    if (string.IsNullOrEmpty(maSV_Input))
+                    if (string.IsNullOrWhiteSpace(maSV_Input))
                     {
-                        MessageBox.Show("Bạn không được để trống mã sinh viên", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Vui lòng chọn sinh viên cần xóa", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -347,22 +394,22 @@ namespace Assignment.View
                     string tinHoc_Input = txtTinHoc.Text;
                     string gdtc_Input = txtGDTC.Text;
 
-                    if (string.IsNullOrEmpty(maSV_Input) || string.IsNullOrEmpty(tiengAnh_Input) || string.IsNullOrEmpty(tinHoc_Input) || string.IsNullOrEmpty(gdtc_Input))
+                    if (string.IsNullOrWhiteSpace(maSV_Input) || string.IsNullOrWhiteSpace(tiengAnh_Input) || string.IsNullOrWhiteSpace(tinHoc_Input) || string.IsNullOrWhiteSpace(gdtc_Input))
                     {
                         List<string> errorList = new List<string>();
-                        if (string.IsNullOrEmpty(maSV_Input))
+                        if (string.IsNullOrWhiteSpace(maSV_Input))
                         {
                             errorList.Add("mã sinh viên");
                         }
-                        if (string.IsNullOrEmpty(tiengAnh_Input))
+                        if (string.IsNullOrWhiteSpace(tiengAnh_Input))
                         {
                             errorList.Add("điểm tiếng anh");
                         }
-                        if (string.IsNullOrEmpty(tinHoc_Input))
+                        if (string.IsNullOrWhiteSpace(tinHoc_Input))
                         {
                             errorList.Add("điểm tin học");
                         }
-                        if (string.IsNullOrEmpty(gdtc_Input))
+                        if (string.IsNullOrWhiteSpace(gdtc_Input))
                         {
                             errorList.Add("điểm giáo dục thể chất");
                         }
@@ -495,22 +542,22 @@ namespace Assignment.View
                     string tinHoc_Input = txtTinHoc.Text;
                     string gdtc_Input = txtGDTC.Text;
 
-                    if (string.IsNullOrEmpty(maSV_Input) || string.IsNullOrEmpty(tiengAnh_Input) || string.IsNullOrEmpty(tinHoc_Input) || string.IsNullOrEmpty(gdtc_Input))
+                    if (string.IsNullOrWhiteSpace(maSV_Input) || string.IsNullOrWhiteSpace(tiengAnh_Input) || string.IsNullOrWhiteSpace(tinHoc_Input) || string.IsNullOrWhiteSpace(gdtc_Input))
                     {
                         List<string> errorList = new List<string>();
-                        if (string.IsNullOrEmpty(maSV_Input))
+                        if (string.IsNullOrWhiteSpace(maSV_Input))
                         {
                             errorList.Add("mã sinh viên");
                         }
-                        if (string.IsNullOrEmpty(tiengAnh_Input))
+                        if (string.IsNullOrWhiteSpace(tiengAnh_Input))
                         {
                             errorList.Add("điểm tiếng anh");
                         }
-                        if (string.IsNullOrEmpty(tinHoc_Input))
+                        if (string.IsNullOrWhiteSpace(tinHoc_Input))
                         {
                             errorList.Add("điểm tin học");
                         }
-                        if (string.IsNullOrEmpty(gdtc_Input))
+                        if (string.IsNullOrWhiteSpace(gdtc_Input))
                         {
                             errorList.Add("điểm giáo dục thể chất");
                         }
@@ -646,7 +693,7 @@ namespace Assignment.View
                 //    string tinHoc_Input = txtTinHoc.Text;
                 //    string gdtc_Input = txtGDTC.Text;
 
-                //    if (!string.IsNullOrEmpty(tiengAnh_Input) || !string.IsNullOrEmpty(tinHoc_Input) || !string.IsNullOrEmpty(gdtc_Input))
+                //    if (!string.IsNullOrWhiteSpace(tiengAnh_Input) || !string.IsNullOrWhiteSpace(tinHoc_Input) || !string.IsNullOrWhiteSpace(gdtc_Input))
                 //    {
                 //        DialogResult result = MessageBox.Show("Bạn có chắc chắn muống hũy? Dử liệu đang chỉnh sửa sẽ biến mất và không thể khôi phục", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 //        if (result != DialogResult.Yes)
@@ -672,9 +719,9 @@ namespace Assignment.View
         {
             string maSV = txtMaSV.Text;
 
-            if (string.IsNullOrEmpty(maSV))
+            if (string.IsNullOrWhiteSpace(maSV))
             {
-                MessageBox.Show("Vui lòng chọn sinh viên", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn sinh viên cần xem chi tiết", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -798,7 +845,7 @@ namespace Assignment.View
                 {
                     string maSV = dgvTOPSV.SelectedRows[0].Cells[0].Value.ToString();
 
-                    if (string.IsNullOrEmpty(maSV))
+                    if (string.IsNullOrWhiteSpace(maSV))
                     {
                         MessageBox.Show("Vui lòng chọn sinh viên", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -878,6 +925,45 @@ namespace Assignment.View
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Lỗi: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void inputDiem_TextChanged(object sender, EventArgs e)
+        {
+            if ((selectFunction == 1 && selectType == 1) || (selectFunction == 2 && selectType == 2))
+            {
+                try
+                {
+                    float diemTiengAnh;
+                    float diemTinHoc;
+                    float diemGDTC;
+
+                    if (string.IsNullOrWhiteSpace(txtTiengAnh.Text) || string.IsNullOrWhiteSpace(txtTinHoc.Text) || string.IsNullOrWhiteSpace(txtGDTC.Text))
+                    {
+                        lblShowTongDiem.Text = "Chưa xét";
+                        return;
+                    }
+
+                    if (!float.TryParse(txtTiengAnh.Text, out diemTiengAnh) || !float.TryParse(txtTinHoc.Text, out diemTinHoc) || !float.TryParse(txtGDTC.Text, out diemGDTC))
+                    {
+                        lblShowTongDiem.Text = "Chưa xét";
+                        return;
+                    }
+
+                    if (diemTiengAnh < 0 || diemTiengAnh > 10 || diemTinHoc < 0 || diemTinHoc > 10 || diemGDTC < 0 || diemGDTC > 10)
+                    {
+                        lblShowTongDiem.Text = "Chưa xét";
+                        return;
+                    }
+
+                    float tongDiem = (diemTiengAnh + diemTinHoc + diemGDTC) / 3;
+                    lblShowTongDiem.Text = tongDiem.ToString("N1");
+                }
+                catch
+                {
+                    lblShowTongDiem.Text = "Chưa xét";
+                    return;
                 }
             }
         }

@@ -145,6 +145,7 @@
             this.txtDiaChi.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtDiaChi.Size = new System.Drawing.Size(199, 73);
             this.txtDiaChi.TabIndex = 1;
+            this.txtDiaChi.TabStop = false;
             // 
             // lblDiaChi
             // 
@@ -177,6 +178,7 @@
             this.btnShow.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnShow.Size = new System.Drawing.Size(105, 30);
             this.btnShow.TabIndex = 5;
+            this.btnShow.TabStop = false;
             this.btnShow.Text = "Show";
             this.btnShow.UseVisualStyleBackColor = true;
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
@@ -191,6 +193,7 @@
             this.btnCancel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnCancel.Size = new System.Drawing.Size(105, 30);
             this.btnCancel.TabIndex = 4;
+            this.btnCancel.TabStop = false;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -205,6 +208,7 @@
             this.btnSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnSave.Size = new System.Drawing.Size(105, 30);
             this.btnSave.TabIndex = 3;
+            this.btnSave.TabStop = false;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -218,6 +222,7 @@
             this.btnUpdate.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnUpdate.Size = new System.Drawing.Size(105, 30);
             this.btnUpdate.TabIndex = 2;
+            this.btnUpdate.TabStop = false;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
@@ -231,6 +236,7 @@
             this.btnDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnDelete.Size = new System.Drawing.Size(105, 30);
             this.btnDelete.TabIndex = 1;
+            this.btnDelete.TabStop = false;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -244,6 +250,7 @@
             this.btnNew.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnNew.Size = new System.Drawing.Size(105, 30);
             this.btnNew.TabIndex = 0;
+            this.btnNew.TabStop = false;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
@@ -294,6 +301,7 @@
             this.btnUploadPicture.Name = "btnUploadPicture";
             this.btnUploadPicture.Size = new System.Drawing.Size(119, 23);
             this.btnUploadPicture.TabIndex = 1;
+            this.btnUploadPicture.TabStop = false;
             this.btnUploadPicture.Text = "Chọn ảnh";
             this.btnUploadPicture.UseVisualStyleBackColor = true;
             this.btnUploadPicture.Click += new System.EventHandler(this.btnUploadPicture_Click);
@@ -323,6 +331,7 @@
             this.txtEmail.ReadOnly = true;
             this.txtEmail.Size = new System.Drawing.Size(199, 22);
             this.txtEmail.TabIndex = 1;
+            this.txtEmail.TabStop = false;
             // 
             // lblEmail
             // 
@@ -349,6 +358,7 @@
             this.txtSoDT.ReadOnly = true;
             this.txtSoDT.Size = new System.Drawing.Size(199, 22);
             this.txtSoDT.TabIndex = 1;
+            this.txtSoDT.TabStop = false;
             // 
             // lblSoDT
             // 
@@ -418,6 +428,7 @@
             this.txtTenSV.ReadOnly = true;
             this.txtTenSV.Size = new System.Drawing.Size(199, 22);
             this.txtTenSV.TabIndex = 1;
+            this.txtTenSV.TabStop = false;
             // 
             // lblTenSV
             // 
@@ -444,6 +455,7 @@
             this.txtMaSV.ReadOnly = true;
             this.txtMaSV.Size = new System.Drawing.Size(199, 22);
             this.txtMaSV.TabIndex = 1;
+            this.txtMaSV.TabStop = false;
             // 
             // lblMaSV
             // 
@@ -456,6 +468,7 @@
             // 
             // frmQLSV
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 727);
@@ -465,6 +478,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản lý sinh viên";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmQLSV_FormClosed);
+            this.Load += new System.EventHandler(this.frmQLSV_Load);
             this.pnlMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             this.pnlInformation.ResumeLayout(false);

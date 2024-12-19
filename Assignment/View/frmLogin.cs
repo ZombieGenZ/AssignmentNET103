@@ -1,4 +1,5 @@
 ﻿using Assignment.Controls;
+using Assignment.View;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,6 +10,7 @@ namespace Assignment
     public partial class frmLogin : Form
     {
         private string connectionString = Properties.Settings.Default.connectionString;
+        private bool showPassword = false;
         public frmLogin()
         {
             InitializeComponent();
@@ -17,27 +19,33 @@ namespace Assignment
 
         private void CheckSaveAccount()
         {
+            //chkNhoTaiKhoan.Text = "Lưu thông tin đăng nhập";
+
+            chkNhoTaiKhoan.Text = "Duy trì đăng nhập";
+
             string username = Properties.Settings.Default.username;
             string password = Properties.Settings.Default.password;
 
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
+
+                //txtUsername.Text = Security.Decrypt(username);
+                //txtPassword.Text = Security.Decrypt(password);
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('ADMIN', 'CBDT', 'GV')";
+                    string query = "SELECT role FROM USERS WHERE username = @username AND password = CONVERT(VARBINARY(MAX), @password, 2) AND role IN ('ADMIN', 'CBDT', 'GV')";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", Security.Decrypt(username));
-                        cmd.Parameters.AddWithValue("@password", Security.Decrypt(password));
+                        cmd.Parameters.AddWithValue("@password", Security.GetMd5Hash(Security.Decrypt(password)));
 
                         dynamic role = cmd.ExecuteScalar();
 
                         if (role == null)
                         {
-                            Properties.Settings.Default.username = "";
-                            Properties.Settings.Default.password = "";
                             return;
                         }
 
@@ -57,14 +65,14 @@ namespace Assignment
                 string username = txtUsername.Text;
                 string password = txtPassword.Text;
 
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 {
                     List<string> emptyList = new List<string>();
-                    if (string.IsNullOrEmpty(username))
+                    if (string.IsNullOrWhiteSpace(username))
                     {
                         emptyList.Add("tên người dùng");
                     }
-                    if (string.IsNullOrEmpty(username))
+                    if (string.IsNullOrWhiteSpace(username))
                     {
                         emptyList.Add("mật khẩu");
                     }
@@ -90,11 +98,11 @@ namespace Assignment
                 {
                     conn.Open();
 
-                    string query = "SELECT role FROM USERS WHERE username = @username AND password = @password AND role IN ('ADMIN', 'CBDT', 'GV')";
+                    string query = "SELECT role FROM USERS WHERE username = @username AND password = CONVERT(VARBINARY(MAX), @password, 2) AND role IN ('ADMIN', 'CBDT', 'GV')";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);
-                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@password", Security.GetMd5Hash(password));
 
                         dynamic role = cmd.ExecuteScalar();
 
@@ -135,6 +143,33 @@ namespace Assignment
             if (result == DialogResult.Yes)
             {
                 Close();
+            }
+        }
+
+        private void btnShowPassword_Click(object sender, EventArgs e)
+        {
+            showPassword = !showPassword;
+
+            if (showPassword)
+            {
+                txtPassword.PasswordChar = '\0';
+                btnShowPassword.Image = Properties.Resources.hidden;
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
+                btnShowPassword.Image = Properties.Resources.eye;
+            }
+        }
+
+        private void frmLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                e.SuppressKeyPress = true;
+
+                frmAccountSuggestion frm = new frmAccountSuggestion(this);
+                frm.ShowDialog();
             }
         }
     }
